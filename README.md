@@ -25,6 +25,8 @@ Sur Windows ou Raspberry Pi OS :
 
 pip install pygame requests
 
+pip install requests
+
 Si tu utilises un Raspberry Pi, il peut être nécessaire d’installer les dépendances système pour Pygame :
 
 sudo apt update
