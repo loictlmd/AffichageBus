@@ -30,8 +30,8 @@ Si tu utilises un Raspberry Pi, il peut être nécessaire d’installer les dép
 - sudo apt update
 - sudo apt install python3-pygame python3-pip
 
-3. Préparer les icônes
-Crée un dossier icons/ à la racine du projet et ajoute les images suivantes :
+3. Préparer les icônes : 
+crée un dossier icons/ à la racine du projet et ajoute les images suivantes :
 
 - sunny.png, cloudy.png, rainy.png, windy.png (icônes météo)
 - temp.png, humidity.png (température et humidité)
