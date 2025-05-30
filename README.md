@@ -48,13 +48,16 @@ L’application s’ouvre en plein écran.
 Pour quitter, utilise Alt+F4 ou Ctrl+C dans le terminal.
 
 
-🎨 Personnalisation
+🎨 Personnalisation : 
+
 Pour changer l’arrêt de bus ou la station V’Lille, modifie les variables NOM_STATION et STATION_VLILLE en haut du fichier affichagebus.py.
 Les durées d’affichage de chaque page sont dans la liste PAGE_DURATIONS.
 
-🛠️ Dépannage
+🛠️ Dépannage : 
+
 Si tu rencontres une erreur liée à Pygame sur Raspberry Pi, vérifie que tu as bien installé python3-pygame via apt.
 Si les données ne s’affichent pas, vérifie ta connexion Internet et l’accessibilité des APIs.
 
 🔗 Licence
+
 Projet open-source sous licence MIT.
