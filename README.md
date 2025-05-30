@@ -23,7 +23,7 @@ Le tout tourne sur un Raspberry Pi 4 connecté à un écran PC (HDMI)
 2. Installer les dépendances
 Sur Windows ou Raspberry Pi OS : 
 
-pip install pygame requests
+pip install pygame
 
 pip install requests
 
