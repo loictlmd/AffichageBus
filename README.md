@@ -28,6 +28,7 @@ pip install pygame requests
 Si tu utilises un Raspberry Pi, il peut être nécessaire d’installer les dépendances système pour Pygame :
 
 sudo apt update
+
 sudo apt install python3-pygame python3-pip
 
 3. Préparer les icônes
