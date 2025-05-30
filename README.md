@@ -8,7 +8,7 @@ Affichage Bus est une application embarquée développée en Python / Pygame pou
 
 Le tout tourne sur un Raspberry Pi 4 connecté à un écran PC (HDMI)
 
-📦 Caractéristiques
+📦 Caractéristiques :
 
 - Interface full-screen responsive, conçue pour la lisibilité à distance  
 - Animations légères (nuages en mouvement, icônes animées)  
@@ -16,7 +16,7 @@ Le tout tourne sur un Raspberry Pi 4 connecté à un écran PC (HDMI)
 - Architecture non bloquante : threads / asyncio pour séparer rafraîchissement des données et rendu graphique  
 - Extensible : ajout aisé de nouveaux flux (RSS, actualités campus, événements…)  
 
-🚀 Installation
+🚀 Installation :
 
 1. Cloner le dépôt sur ton PC/Raspberry
 
@@ -60,4 +60,4 @@ Si les données ne s’affichent pas, vérifie ta connexion Internet et l’acce
 
 🔗 Licence
 
-Projet open-source sous licence MIT.
+Projet open-source sous licence MIT
