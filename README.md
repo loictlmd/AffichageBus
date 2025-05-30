@@ -38,6 +38,7 @@ Crée un dossier icons/ à la racine du projet et ajoute les images suivantes 
 - vlille.png (logo V'Lille)
 - junia.png, ilevia.png (logos partenaires)
 - busL5aller.png, busL5retour.png, bus18aller.png, bus18retour.png (icônes bus par ligne et direction)
+
 Astuce : Les noms doivent correspondre exactement à ceux attendus dans le code.
 
 4. Lancer l’application
