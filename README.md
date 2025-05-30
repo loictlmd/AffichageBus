@@ -21,6 +21,7 @@ Le tout tourne sur un Raspberry Pi 4 connecté à un écran PC (HDMI)
 1. Cloner le dépôt sur ton PC/Raspberry
 
 2. Installer les dépendances
+
 Sur Windows ou Raspberry Pi OS : 
 - pip install pygame
 - pip install requests
