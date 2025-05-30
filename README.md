@@ -18,15 +18,15 @@ Le tout tourne sur un Raspberry Pi 4 connecté à un écran PC (HDMI)
 
 🚀 Installation
 
-1. Cloner le dépôt
-git clone https://github.com/<ton-utilisateur>/AffichageBus.git
-cd AffichageBus
+1. Cloner le dépôt sur ton PC/Raspberry
 
 2. Installer les dépendances
 Sur Windows ou Raspberry Pi OS : 
+
 pip install pygame requests
 
 Si tu utilises un Raspberry Pi, il peut être nécessaire d’installer les dépendances système pour Pygame :
+
 sudo apt update
 sudo apt install python3-pygame python3-pip
 
