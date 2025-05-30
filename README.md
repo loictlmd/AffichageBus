@@ -21,17 +21,13 @@ Le tout tourne sur un Raspberry Pi 4 connecté à un écran PC (HDMI)
 1. Cloner le dépôt sur ton PC/Raspberry
 
 2. Installer les dépendances
-Sur Windows ou Raspberry Pi OS : 
-
-pip install pygame
-
-pip install requests
+- Sur Windows ou Raspberry Pi OS : 
+- pip install pygame
+- pip install requests
 
 Si tu utilises un Raspberry Pi, il peut être nécessaire d’installer les dépendances système pour Pygame :
-
-sudo apt update
-
-sudo apt install python3-pygame python3-pip
+- sudo apt update
+- sudo apt install python3-pygame python3-pip
 
 3. Préparer les icônes
 Crée un dossier icons/ à la racine du projet et ajoute les images suivantes :
