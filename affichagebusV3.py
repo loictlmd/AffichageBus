@@ -561,8 +561,8 @@ class Renderer:
             c.text("JUNIA", 153, 40, 46, WHITE, True, align="center")
         c.line((267, 38), (267, 105), DARK_TILE, 2)
         c.text("LA VIE DU CAMPUS", 294, 38, 29, WHITE, True)
-        c.text("Lille  /  Informations pratiques", 295, 81, 23, SOFT_TEXT)
-        c.text(date_fr(now, year=True), 1528, 54, 28, WHITE, max_width=620, align="right")
+        c.text("Informations pratiques", 295, 81, 23, SOFT_TEXT)
+        c.text(date_fr(now, year=True), 1528, 46, 38, WHITE, max_width=740, align="right")
         c.text(now.strftime("%H:%M"), 1868, 22, 74, WHITE, True, align="right")
 
     def heading(self, kicker, title, subtitle):
@@ -575,65 +575,208 @@ class Renderer:
         self.c.text(status(sources[name], name, now), x, y, 20, MUTED)
 
     def sidebar(self, sources, now, slot):
-        c = self.c
-        x, w = 1304, 568
-        c.rect((x, 176, w, 856), PURPLE, 28)
-        c.text("L’ESSENTIEL", x + 32, 203, 22, SOFT_TEXT, True)
-        c.line((x + 32, 249), (x + w - 32, 249), DARK_TILE)
-        actual = sources["actual"].data or {}
-        c.text("Météo actuelle", x + 32, 274, 25, WHITE, True)
-        has_temp = c.image("temp.png", (x + 30, 325, 48, 62))
-        c.text(fmt(actual.get("temperature"), "°"), x + (92 if has_temp else 32), 310, 68, WHITE, True, 210)
-        c.text("Lille", x + 34, 401, 22, SOFT_TEXT)
-        c.line((x + 291, 328), (x + 291, 419), DARK_TILE, 2)
-        has_humidity = c.image("humidity.png", (x + 325, 338, 38, 42))
-        c.text(fmt(actual.get("humidity"), " %"), x + (374 if has_humidity else 331), 332, 40, WHITE, True, 170)
-        c.text("Humidité", x + 331, 389, 22, SOFT_TEXT)
-        c.text(status(sources["actual"], "actual", now), x + 32, 440, 18, SOFT_TEXT, max_width=w-64)
-        c.line((x + 32, 477), (x + w - 32, 477), DARK_TILE)
-        c.text("V’Lille", x + 32, 493, 28, WHITE, True)
-        c.text("Palais Rameau", x + w - 32, 500, 23, SOFT_TEXT, align="right")
-        vl = sources["vlille"].data
-        bikes, spaces = (vl["bikes"], vl["spaces"]) if vl else (None, None)
-        c.text(fmt(bikes), x + 32, 528, 54, WHITE, True)
-        c.text("vélos", x + 129, 552, 23, SOFT_TEXT)
-        c.text(fmt(spaces), x + 317, 528, 54, WHITE, True)
-        c.text("places", x + 410, 552, 23, SOFT_TEXT)
-        c.rect((x + 32, 600, w - 64, 9), DARK_TILE, 4)
-        if vl and bikes + spaces:
-            c.rect((x + 32, 600, (w - 64) * bikes / (bikes + spaces), 9), ORANGE, 4)
-        c.text(status(sources["vlille"], "vlille", now), x + 32, 620, 17, SOFT_TEXT, max_width=w-64)
+            c = self.c
+            x, w = 1304, 568
 
-        c.rect((x + 20, 642, w - 40, 370), WHITE, 20)
-        ev = next_event(sources["events"].data, now)
-        if ev and slot % 2:
-            c.text("PROCHAIN RENDEZ-VOUS", x + 44, 662, 20, MUTED, True)
-            self.calendar(ev["start"], (x + 44, 717, 92, 122), PURPLE, WHITE)
-            c.text(event_when(ev["start"], now), x + 156, 718, 23, ORANGE, True, w - 195)
-            c.wrapped(ev["title"], x + 156, 765, w - 195, 30, PURPLE, True, 2, 1.1)
-            c.text(event_countdown(ev["start"], now), x + 44, 887, 26, PURPLE, True, w - 88)
-            c.pill(ev["association"], x + 44, 939, min(470, c.width(ev["association"], 20, True) + 30), LILAC, PURPLE, 20)
-            c.text(status(sources["events"], "events", now), x + 44, 942, 17, MUTED, max_width=w-88)
-        else:
-            c.text("PROCHAINS BUS", x + 44, 662, 21, PURPLE, True)
-            c.text("Solférino", x + w - 44, 663, 21, MUTED, align="right")
-            buses = sources["bus"].data or {}
-            for i, line in enumerate(DIRECTIONS):
-                y = 711 + 143 * i
-                c.rect((x + 36, y, w - 72, 131), PAPER, 14)
-                c.pill(line, x + 48, y + 25, 59, PURPLE if i == 0 else ORANGE)
-                next_times = line_departures(buses, line, now)
-                if next_times:
-                    dt, direction = next_times[0]
-                    mins = remaining_minutes(dt, now)
-                    c.text(dt.strftime("%H:%M"), x + 124, y + 20, 36, PURPLE, True)
-                    c.text("Imminent" if mins == 0 else f"{mins} min", x + w - 50, y + 23, 30, PURPLE, True, 188, "right")
-                    c.text("→ " + direction, x + 50, y + 77, 21, PURPLE, max_width=w - 100)
-                    
-                else:
-                    c.text("Aucun passage annoncé", x + 124, y + 26, 21, MUTED, max_width=w-175)
-                    c.text("En attente des prochains départs", x + 50, y + 77, 20, MUTED)
-            c.text(status(sources["bus"], "bus", now), x + 44, 942, 17, MUTED, max_width=w-88)
+            c.rect((x, 176, w, 856), PURPLE, 28)
+            c.text("L’ESSENTIEL", x + 32, 203, 22, SOFT_TEXT, True)
+            c.line((x + 32, 249), (x + w - 32, 249), DARK_TILE)
+
+            # Météo actuelle
+            actual = sources["actual"].data or {}
+
+            c.text("Météo actuelle", x + 32, 268, 30, WHITE, True)
+
+            has_temp = c.image("temp.png", (x + 30, 318, 64, 88))
+            c.text(
+                fmt(actual.get("temperature"), "°"),
+                x + (110 if has_temp else 32),
+                317, 70, WHITE, True, 180
+            )
+            c.text("Lille", x + 34, 414, 26, SOFT_TEXT)
+
+            c.line(
+                (x + 300, 320),
+                (x + 300, 444),
+                DARK_TILE, 2
+            )
+
+            has_humidity = c.image(
+                "humidity.png", (x + 318, 327, 50, 62)
+            )
+            c.text(
+                fmt(actual.get("humidity"), " %"),
+                x + (384 if has_humidity else 326),
+                330, 46, WHITE, True, 152
+            )
+            c.text("Humidité", x + 326, 414, 26, SOFT_TEXT)
+
+            c.text(
+                status(sources["actual"], "actual", now),
+                x + 32, 440, 18, SOFT_TEXT,
+                max_width=w - 64
+            )
+
+            # Disponibilités V’Lille
+            c.line((x + 32, 477), (x + w - 32, 477), DARK_TILE)
+            c.text("V’Lille", x + 32, 489, 32, WHITE, True)
+            c.text(
+                "Palais Rameau",
+                x + w - 32, 496, 26, SOFT_TEXT,
+                align="right"
+            )
+
+            vl = sources["vlille"].data
+            bikes, spaces = (
+                (vl["bikes"], vl["spaces"]) if vl else (None, None)
+            )
+
+            c.text(fmt(bikes), x + 32, 530, 64, WHITE, True)
+            c.text("vélos", x + 137, 555, 27, SOFT_TEXT)
+            c.text(fmt(spaces), x + 317, 530, 64, WHITE, True)
+            c.text("places", x + 411, 555, 27, SOFT_TEXT)
+
+            c.rect((x + 32, 614, w - 64, 12), DARK_TILE, 4)
+            if vl and bikes + spaces:
+                c.rect(
+                    (
+                        x + 32, 614,
+                        (w - 64) * bikes / (bikes + spaces), 12
+                    ),
+                    ORANGE, 4
+                )
+
+            c.text(
+                status(sources["vlille"], "vlille", now),
+                x + 32, 620, 17, SOFT_TEXT,
+                max_width=w - 64
+            )
+
+            # Carte alternant entre prochain événement et prochains bus
+            c.rect((x + 20, 642, w - 40, 370), WHITE, 20)
+            ev = next_event(sources["events"].data, now)
+
+            if ev is not None and slot % 2:
+                c.text(
+                    "PROCHAIN RENDEZ-VOUS",
+                    x + 44, 665, 26, MUTED, True,
+                    max_width=w - 88
+                )
+
+                # Calendrier agrandi uniquement dans cette carte.
+                c.rect((x + 44, 724, 124, 194), PURPLE, 18)
+                c.text(
+                    JOURS[ev["start"].weekday()][:3].upper() + ".",
+                    x + 106, 736, 24, WHITE, True, align="center"
+                )
+                c.text(
+                    str(ev["start"].day).zfill(2),
+                    x + 106, 766, 76, WHITE, True, align="center"
+                )
+                c.text(
+                    MOIS[ev["start"].month][:3].upper() + ".",
+                    x + 106, 872, 24, WHITE, True, align="center"
+                )
+
+                text_x = x + 190
+                text_width = w - 234
+                c.text(
+                    event_when(ev["start"], now),
+                    text_x, 724, 30, ORANGE, True,
+                    max_width=text_width
+                )
+                c.wrapped(
+                    ev["title"],
+                    text_x, 778, text_width,
+                    40, PURPLE, True, 3, 1.1
+                )
+
+                # Association plus visible, avec une marge de 24 px en bas.
+                association_size = 28
+                association_width = min(
+                    w - 88,
+                    c.width(ev["association"], association_size, True) + 40
+                )
+                c.rect((x + 44, 936, association_width, 52), LILAC, 26)
+                text_height = c.font(association_size, True).get_height() / c.scale
+                c.text(
+                    ev["association"],
+                    x + 44 + association_width / 2,
+                    936 + (52 - text_height) / 2,
+                    association_size, PURPLE, True,
+                    max_width=association_width - 32,
+                    align="center"
+                )
+
+                c.text(
+                    status(sources["events"], "events", now),
+                    x + 44, 988, 17, MUTED,
+                    max_width=w - 88
+                )
+
+            else:
+                c.text(
+                    "PROCHAINS BUS",
+                    x + 44, 662, 21, PURPLE, True
+                )
+                c.text(
+                    "Solférino",
+                    x + w - 44, 663, 21, MUTED,
+                    align="right"
+                )
+
+                buses = sources["bus"].data or {}
+
+                for i, line in enumerate(DIRECTIONS):
+                    y = 711 + 143 * i
+
+                    c.rect(
+                        (x + 36, y, w - 72, 131),
+                        PAPER, 14
+                    )
+                    c.pill(
+                        line,
+                        x + 48, y + 25, 59,
+                        PURPLE if i == 0 else ORANGE
+                    )
+
+                    next_times = line_departures(buses, line, now)
+
+                    if next_times:
+                        dt, direction = next_times[0]
+                        mins = remaining_minutes(dt, now)
+
+                        c.text(
+                            dt.strftime("%H:%M"),
+                            x + 124, y + 20, 36, PURPLE, True
+                        )
+                        c.text(
+                            "Imminent" if mins == 0 else f"{mins} min",
+                            x + w - 50, y + 23,
+                            30, PURPLE, True, 188, "right"
+                        )
+                        c.text(
+                            "→ " + direction,
+                            x + 50, y + 77, 21, PURPLE,
+                            max_width=w - 100
+                        )
+
+                    else:
+                        c.text(
+                            "Aucun passage annoncé",
+                            x + 124, y + 26, 21, MUTED,
+                            max_width=w - 175
+                        )
+                        c.text(
+                            "En attente des prochains départs",
+                            x + 50, y + 77, 20, MUTED
+                        )
+
+                c.text(
+                    status(sources["bus"], "bus", now),
+                    x + 44, 988, 17, MUTED,
+                    max_width=w - 88
+                )
 
     def calendar(self, dt, box, background=PEACH, foreground=PURPLE):
         c = self.c
@@ -698,8 +841,7 @@ class Renderer:
             c.rect((x, y, w, 682), PURPLE, 26)
             self.calendar(ev["start"], (x + 36, y + 36, 132, 152), WHITE, PURPLE)
             c.text("À L’AFFICHE", x + 202, y + 40, 23, ORANGE, True)
-            c.text(event_when(ev["start"], now), x + 202, y + 85, 35, WHITE, True, w-238)
-            c.text(event_countdown(ev["start"], now), x + 202, y + 141, 25, SOFT_TEXT)
+            c.text(event_when(ev["start"], now), x + 202, y + 100, 46, WHITE, True, max_width=w - 238)
             c.wrapped(ev["title"], x + 36, y + 281, w - 72, 61, WHITE, True, 3, 1.1)
             c.line((x + 36, y + 573), (x + w - 36, y + 573), DARK_TILE, 2)
             c.pill(ev["association"], x + 36, y + 611, min(565, c.width(ev["association"], 24, True) + 36), ORANGE, WHITE, 24)
@@ -811,7 +953,7 @@ class Renderer:
 
     def bikes(self, sources, now, ring_progress):
         c = self.c
-        self.heading("Mobilité douce", "À vélo, tout simplement.", "Station V’Lille  /  Palais Rameau")
+        self.heading("Mobilité douce", "À vélo, tout simplement.", "Station V’Lille - Palais Rameau")
         vl = sources["vlille"].data
         for i, label in enumerate(("Vélos disponibles", "Places libres")):
             x = 48 + 620 * i
