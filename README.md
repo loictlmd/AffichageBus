@@ -8,11 +8,11 @@
 - Arrêt **Solférino**, lignes **L5** et **18** ; station V’Lille **Palais Rameau**.
 - Bandeau JUNIA violet, logo blanc, date et heure de Paris ; informations essentielles dans la colonne droite.
 - Agenda adapté au nombre d’événements ; QR code pour proposer un événement.
-- Prochains bus avec destination et passage suivant dans le résumé latéral.
+- Résumé latéral limité au numéro de ligne et à l’heure du prochain bus.
 - Images météo chargées depuis `icons/` ; pictogrammes de secours si une image manque.
 - Appels réseau dans des workers séparés, sessions HTTP réutilisées et caches de rendu bornés.
-- Dernières données reçues conservées **en mémoire** pendant une panne, avec horodatage par source.
-- Pas de barre de progression ni de logo Ilévia en pied de page.
+- Dernières données reçues conservées **en mémoire** pendant une panne, avec une indication discrète si elles sont anciennes.
+- Pas d’horodatages de mise à jour, d’onglets, de barre de progression ni de logo Ilévia en pied de page.
 
 ![Aperçu V3.1 avec données fictives et représentations de secours](docs/apercu_JUNIA_V3_1.png)
 
@@ -96,7 +96,9 @@ python3 -m unittest -v test_affichagebusV3_1.py
 
 23 tests locaux réussis : horaires MEL, dates et changements d’heure, réponses manquantes, disponibilité à zéro, pannes réseau, agenda adaptatif, images météo prioritaires et pied de page. Correction des bus également vérifiée sur la réponse réelle de Solférino.
 
-Environnement de test : macOS, Python 3.14.3, pygame-ce 2.5.8, SDL hors écran. Les performances sur Raspberry Pi et une endurance de 24 h restent à vérifier sur place.
+Vérification initiale : macOS, Python 3.14.3, pygame-ce 2.5.8, SDL hors écran.
+
+La simplification du 6 octobre 2026 retire les horodatages de mise à jour et les onglets ; le bloc bus latéral affiche uniquement la ligne et l’heure du prochain départ. Les performances sur Raspberry Pi et une endurance de 24 h restent à vérifier sur place.
 
 ## Pistes envisagées
 
@@ -105,3 +107,4 @@ Extinction nocturne, supervision à distance, annonces prioritaires, interface d
 ## Licence
 
 Le README historique décrit le projet comme open source sous licence MIT.
+

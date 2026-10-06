@@ -2,17 +2,17 @@
 
 ## Modifications demandées
 
-- Barre de progression tout en bas supprimée ; les onglets de navigation restent visibles.
+- Barre de progression et onglets de navigation du bas supprimés.
 - Logo JUNIA blanc posé directement sur le bandeau violet, sans cartouche blanc.
 - Logo Ilévia retiré du pied de page.
 - Horaires bus corrigés avec le décalage explicite présent dans le champ `cle_tri` de l’API.
 - Images météo existantes réutilisées en priorité : `sunny.png`, `cloudy.png`, `rainy.png`, `temp.png`, `humidity.png`. Les dessins ne servent plus qu’en cas de fichier manquant ou illisible. `snow.png` et `storm.png` sont acceptés s’ils existent ; sinon les images nuage/pluie prennent le relais.
 - Agenda adaptatif : une grande carte pour un événement, deux ou trois cartes sur toute la hauteur, puis une grille pour quatre à six événements. Les groupes suivants restent accessibles au fil du carrousel.
 - QR code mieux mis en valeur à côté de l’agenda lorsqu’il y a peu d’événements.
-- Bloc bus à droite enrichi avec la destination du prochain départ et le passage suivant de chaque ligne, tous sens confondus.
+- Bloc bus à droite simplifié : numéro de ligne et heure du prochain départ, tous sens confondus.
 - Bloc du prochain événement revu avec calendrier, titre, heure, délai et association.
 
-Les optimisations de la V3 restent en place : réseau dans des workers séparés, cache des images/polices/textes, conservation en mémoire des dernières données reçues et indication de leur heure de réception.
+Les optimisations de la V3 restent en place : réseau dans des workers séparés, cache des images/polices/textes, conservation en mémoire des dernières données reçues et indication discrète si les données sont anciennes. Les mentions « Actualisé à… » ne sont plus affichées.
 
 ## Pourquoi les bus avaient deux heures d’avance
 
@@ -83,3 +83,4 @@ python3 -m unittest -v test_affichagebusV3_1.py
 ```
 
 Les propositions précédentes (extinction nocturne, supervision, messages prioritaires, administration et cache persistant) ne sont toujours pas implémentées.
+

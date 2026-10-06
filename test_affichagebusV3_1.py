@@ -99,7 +99,7 @@ class DataTests(unittest.TestCase):
         state = store.snapshot()[1]["vlille"]
         self.assertEqual(state.data, data)
         self.assertEqual(state.updated_at, stamp)
-        self.assertIn("Dernières données", app.status(state, "vlille", stamp))
+        self.assertEqual(app.status(state, "vlille", stamp), "Données anciennes")
         self.assertIsNotNone(state.error)
 
     def test_vlille_missing_differs_from_zero(self):

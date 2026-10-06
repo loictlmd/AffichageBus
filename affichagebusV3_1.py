@@ -52,7 +52,6 @@ PERIODS = {"bus": 60, "vlille": 60, "events": 60, "actual": 300, "forecast": 900
 HTTP_TIMEOUT = (3.0, 8.0)       # Connexion, puis attente de lecture.
 MAX_JSON_BYTES = 32 * 1024 * 1024
 LOGICAL_SIZE = (1920, 1080)
-PAGE_NAMES = ("Vie de campus", "Prochains bus", "Météo", "V’Lille")
 
 # Palette reprise de la V2 ; validation avec la charte actuelle à faire.
 PURPLE = "#3F2A55"
@@ -371,8 +370,8 @@ def status(source, name, now):
     age = max(0, int((now.timestamp() - source.updated_at.timestamp()) / 60))
     old = source.error or age * 60 > PERIODS[name] * 3
     if old:
-        return f"Dernières données : {source.updated_at:%H:%M}" if age < 1440 else "Données anciennes"
-    return f"Actualisé à {source.updated_at:%H:%M}"
+        return "Données anciennes"
+    return ""
 
 
 def weather_kind(code):
@@ -627,20 +626,13 @@ class Renderer:
             for i, line in enumerate(DIRECTIONS):
                 y = 715 + 111 * i
                 c.rect((x + 36, y, w - 72, 101), PAPER, 14)
-                c.pill(line, x + 48, y + 12, 59, PURPLE if i == 0 else ORANGE)
-                next_times = line_departures(buses, line, now)
+                c.pill(line, x + 48, y + 31, 59, PURPLE if i == 0 else ORANGE)
+                next_times = line_departures(buses, line, now, count=1)
                 if next_times:
-                    dt, direction = next_times[0]
-                    mins = remaining_minutes(dt, now)
-                    c.text(dt.strftime("%H:%M"), x + 124, y + 10, 30, PURPLE, True)
-                    c.text("Imminent" if mins == 0 else f"{mins} min", x + w - 50, y + 11, 28, PURPLE, True, 188, "right")
-                    c.text("→ " + direction, x + 50, y + 53, 18, PURPLE, max_width=w - 100)
-                    if len(next_times) > 1:
-                        second, destination = next_times[1]
-                        c.text(f"Puis {second:%H:%M}  ·  {destination}", x + 50, y + 78, 15, MUTED, max_width=w-100)
+                    dt, _ = next_times[0]
+                    c.text(dt.strftime("%H:%M"), x + w - 54, y + 22, 43, PURPLE, True, align="right")
                 else:
-                    c.text("Aucun passage annoncé", x + 124, y + 18, 21, MUTED, max_width=w-175)
-                    c.text("En attente des prochains départs", x + 50, y + 63, 17, MUTED)
+                    c.text("Aucun passage annoncé", x + 124, y + 37, 21, MUTED, max_width=w-175)
             c.text(status(sources["bus"], "bus", now), x + 44, 942, 17, MUTED, max_width=w-88)
 
     def calendar(self, dt, box, background=PEACH, foreground=PURPLE):
@@ -848,11 +840,6 @@ class Renderer:
 
     def footer(self, page, demo):
         c = self.c
-        c.line((48, 1016), (1872, 1016), LILAC, 2)
-        for i, name in enumerate(PAGE_NAMES):
-            x = 48 + i * 268
-            c.circle(x + 6, 1048, 5, ORANGE if i == page else LILAC)
-            c.text(name, x + 23, 1034, 22, PURPLE if i == page else MUTED, i == page)
         if demo:
             c.text("DÉMONSTRATION · DONNÉES FICTIVES", 1872, 1041, 15, MUTED, align="right")
 
