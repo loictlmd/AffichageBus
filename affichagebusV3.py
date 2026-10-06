@@ -583,11 +583,11 @@ class Renderer:
         actual = sources["actual"].data or {}
         c.text("Météo actuelle", x + 32, 274, 25, WHITE, True)
         has_temp = c.image("temp.png", (x + 30, 325, 48, 62))
-        c.text(fmt(actual.get("temperature"), "°"), x + (92 if has_temp else 32), 314, 62, WHITE, True, 210)
+        c.text(fmt(actual.get("temperature"), "°"), x + (92 if has_temp else 32), 310, 68, WHITE, True, 210)
         c.text("Lille", x + 34, 401, 22, SOFT_TEXT)
         c.line((x + 291, 328), (x + 291, 419), DARK_TILE, 2)
         has_humidity = c.image("humidity.png", (x + 325, 338, 38, 42))
-        c.text(fmt(actual.get("humidity"), " %"), x + (374 if has_humidity else 331), 334, 37, WHITE, True, 170)
+        c.text(fmt(actual.get("humidity"), " %"), x + (374 if has_humidity else 331), 332, 40, WHITE, True, 170)
         c.text("Humidité", x + 331, 389, 22, SOFT_TEXT)
         c.text(status(sources["actual"], "actual", now), x + 32, 440, 18, SOFT_TEXT, max_width=w-64)
         c.line((x + 32, 477), (x + w - 32, 477), DARK_TILE)
@@ -595,9 +595,9 @@ class Renderer:
         c.text("Palais Rameau", x + w - 32, 500, 23, SOFT_TEXT, align="right")
         vl = sources["vlille"].data
         bikes, spaces = (vl["bikes"], vl["spaces"]) if vl else (None, None)
-        c.text(fmt(bikes), x + 32, 532, 48, WHITE, True)
+        c.text(fmt(bikes), x + 32, 528, 54, WHITE, True)
         c.text("vélos", x + 129, 552, 23, SOFT_TEXT)
-        c.text(fmt(spaces), x + 317, 532, 48, WHITE, True)
+        c.text(fmt(spaces), x + 317, 528, 54, WHITE, True)
         c.text("places", x + 410, 552, 23, SOFT_TEXT)
         c.rect((x + 32, 600, w - 64, 9), DARK_TILE, 4)
         if vl and bikes + spaces:
@@ -626,22 +626,22 @@ class Renderer:
                 if next_times:
                     dt, direction = next_times[0]
                     mins = remaining_minutes(dt, now)
-                    c.text(dt.strftime("%H:%M"), x + 124, y + 23, 30, PURPLE, True)
-                    c.text("Imminent" if mins == 0 else f"{mins} min", x + w - 50, y + 24, 28, PURPLE, True, 188, "right")
-                    c.text("→ " + direction, x + 50, y + 79, 18, PURPLE, max_width=w - 100)
+                    c.text(dt.strftime("%H:%M"), x + 124, y + 20, 36, PURPLE, True)
+                    c.text("Imminent" if mins == 0 else f"{mins} min", x + w - 50, y + 23, 30, PURPLE, True, 188, "right")
+                    c.text("→ " + direction, x + 50, y + 77, 21, PURPLE, max_width=w - 100)
                     
                 else:
                     c.text("Aucun passage annoncé", x + 124, y + 26, 21, MUTED, max_width=w-175)
-                    c.text("En attente des prochains départs", x + 50, y + 79, 17, MUTED)
+                    c.text("En attente des prochains départs", x + 50, y + 77, 20, MUTED)
             c.text(status(sources["bus"], "bus", now), x + 44, 942, 17, MUTED, max_width=w-88)
 
     def calendar(self, dt, box, background=PEACH, foreground=PURPLE):
         c = self.c
         x, y, w, h = box
         c.rect(box, background, 16)
-        c.text(JOURS[dt.weekday()][:3].upper() + ".", x + w / 2, y + 9, 17, foreground, True, align="center")
+        c.text(JOURS[dt.weekday()][:3].upper() + ".", x + w / 2, y + 8, 19, foreground, True, align="center")
         c.text(str(dt.day).zfill(2), x + w / 2, y + h * 0.22, min(62, h * 0.43), foreground, True, align="center")
-        c.text(MOIS[dt.month][:3].upper() + ".", x + w / 2, y + h - 30, 18, foreground, True, align="center")
+        c.text(MOIS[dt.month][:3].upper() + ".", x + w / 2, y + h - 32, 20, foreground, True, align="center")
 
     def event_qr_panel(self):
         c = self.c
@@ -668,10 +668,10 @@ class Renderer:
         self.calendar(dt, (x + 24, y + 22, calendar_w, min(h - 44, 138 if large else 104)))
         tx = x + calendar_w + 46
         tw = w - calendar_w - 72
-        c.text(event_when(dt, now), tx, y + 21, 23 if large else 20, ORANGE, True, tw)
-        size = 36 if h >= 240 else 28
+        c.text(event_when(dt, now), tx, y + 21, 25 if large else 22, ORANGE, True, tw)
+        size = 38 if h >= 240 else 30
         c.wrapped(event["title"], tx, y + (68 if h >= 240 else 52), tw, size, PURPLE, True, 2, 1.08)
-        c.pill(event["association"], tx, y + h - 47, min(tw, c.width(event["association"], 19, True) + 28), LILAC, PURPLE, 19)
+        c.pill(event["association"], tx, y + h - 47, min(tw, c.width(event["association"], 21, True) + 28), LILAC, PURPLE, 21)
 
     def events(self, sources, now, event_sheet):
         c = self.c
@@ -733,16 +733,16 @@ class Renderer:
                     c.text("Aucun passage annoncé", x, y + 74, 24, MUTED)
                 for j, dt in enumerate(departures):
                     xx = x + j * 250
-                    c.text(dt.strftime("%H:%M"), xx, y + 65, 36, PURPLE, True)
+                    c.text(dt.strftime("%H:%M"), xx, y + 65, 46, PURPLE, True)
                     minutes = remaining_minutes(dt, now)
-                    c.text("imminent" if minutes == 0 else f"dans {minutes} min", xx, y + 111, 21, MUTED)
+                    c.text("imminent" if minutes == 0 else f"dans {minutes} min", xx, y + 125, 25, MUTED)
             # Frise symétrique : chaque côté représente un sens, pas une position GPS.
             left, right, center, fy = 156, 1156, 656, y + 258
             c.line((left, fy), (right, fy), LILAC, 6)
             for minute in (-20, -10, -5, 0, 5, 10, 20):
                 px = center + minute / 20 * (right - center)
                 c.line((px, fy - 6), (px, fy + 6), ORANGE if minute == 0 else LILAC, 4)
-                c.text("JUNIA" if minute == 0 else f"{abs(minute)} min", px, fy + 17, 18, PURPLE if minute == 0 else MUTED, minute == 0, align="center")
+                c.text("JUNIA" if minute == 0 else f"{abs(minute)} min", px, fy + 17, 21, PURPLE if minute == 0 else MUTED, minute == 0, align="center")
             markers = []
             for direction in directions:
                 values = upcoming(records.get((line, direction), ()), now, 1)
@@ -755,8 +755,8 @@ class Renderer:
             close = len(markers) == 2 and abs(markers[0][1] - markers[1][1]) < 80
             for i, (direction, px) in enumerate(markers):
                 c.bus_icon(line, direction, px, fy - 18 - (38 if close and i == 1 else 0))
-            c.text("← " + directions[1].split(" ")[0], left, fy - 39, 17, MUTED)
-            c.text(directions[0].split(" ")[0] + " →", right, fy - 39, 17, MUTED, align="right")
+            c.text("← " + directions[1].split(" ")[0], left, fy - 43, 20, MUTED)
+            c.text(directions[0].split(" ")[0] + " →", right, fy - 43, 20, MUTED, align="right")
         self.source_note(sources, "bus", now)
 
     def weather(self, sources, now):
@@ -770,7 +770,7 @@ class Renderer:
         c.text("Température", 450, 442, 27, MUTED)
         c.line((704, 394), (704, 516), LILAC)
         has_humidity = c.image("humidity.png", (738, 421, 56, 70))
-        c.text(fmt(actual.get("humidity"), " %"), 814 if has_humidity else 750, 414, 59, PURPLE, True, 229)
+        c.text(fmt(actual.get("humidity"), " %"), 814 if has_humidity else 750, 410, 64, PURPLE, True, 229)
         c.text("Humidité", 1067, 442, 24, MUTED)
         c.text(status(sources["actual"], "actual", now), 82, 521, 18, MUTED)
         forecasts = {row["date"]: row for row in (sources["forecast"].data or ())}
@@ -780,17 +780,17 @@ class Renderer:
             x = 48 + 412 * i
             c.rect((x, 582, 392, 450), WHITE, 24)
             c.text("DEMAIN" if i == 0 else JOURS[day.weekday()].upper(), x + 26, 605, 24, PURPLE, True)
-            c.text(f"{day.day} {MOIS[day.month]}", x + 366, 609, 19, MUTED, align="right")
+            c.text(f"{day.day} {MOIS[day.month]}", x + 366, 643, 22, MUTED, align="right")
             if row:
                 kind, label = weather_kind(row["code"])
                 c.weather_icon(kind, x + 20, 675, 116)
-                c.text(fmt(row["max"], "°"), x + 160, 687, 53, PURPLE, True)
-                c.text("/ " + fmt(row["min"], "°"), x + 160, 751, 28, MUTED)
-                c.text(label, x + 28, 827, 24, PURPLE, True)
-                c.text("Pluie", x + 28, 891, 22, MUTED)
-                c.text(fmt(row["rain"], " mm"), x + 362, 891, 24, PURPLE, align="right")
-                c.text("Vent", x + 28, 967, 22, MUTED)
-                c.text(fmt(row["wind"], " km/h"), x + 362, 967, 24, PURPLE, align="right")
+                c.text(fmt(row["max"], "°"), x + 160, 682, 60, PURPLE, True)
+                c.text("/ " + fmt(row["min"], "°"), x + 160, 758, 33, MUTED)
+                c.text(label, x + 28, 827, 27, PURPLE, True)
+                c.text("Pluie", x + 28, 891, 25, MUTED)
+                c.text(fmt(row["rain"], " mm"), x + 362, 891, 28, PURPLE, align="right")
+                c.text("Vent", x + 28, 967, 25, MUTED)
+                c.text(fmt(row["wind"], " km/h"), x + 362, 967, 28, PURPLE, align="right")
             else:
                 c.wrapped("Prévisions indisponibles", x + 28, 735, 336, 30, MUTED)
         self.source_note(sources, "forecast", now)
@@ -821,8 +821,8 @@ class Renderer:
             total = vl["bikes"] + vl["spaces"] if vl else 0
             pct = count / total if total else 0
             self.ring(x + 298, 594, pct * ring_progress, ORANGE if i == 0 else PURPLE)
-            c.text(fmt(count), x + 298, 535, 81, PURPLE, True, align="center")
-            c.text("vélos" if i == 0 else "places", x + 298, 632, 25, MUTED, align="center")
+            c.text(fmt(count), x + 298, 529, 92, PURPLE, True, align="center")
+            c.text("vélos" if i == 0 else "places", x + 298, 638, 28, MUTED, align="center")
         c.rect((48, 808, 1216, 224), LILAC, 24)
         c.text("Un vélo pour votre prochain trajet.", 80, 862, 33, PURPLE, True, 810)
         c.text("Disponibilités de la station Palais Rameau", 82, 919, 24, MUTED, max_width=830)
